@@ -1,0 +1,9 @@
+<div *ngIf="shoppingCart.getQuantity(product.id) > 0;" class="d-grid d-flex justify-content-between">
+  <div>
+    <button (click)="removeFromCart()" class="btn btn-secondary">-</button>
+  </div>
+  <div class="my-auto">{{ shoppingCart.getQuantity(product.id) }}</div>
+  <div>
+    <button (click)="addToCart()" class="btn btn-secondary">+</button>
+  </div>
+</div>

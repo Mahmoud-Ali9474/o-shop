@@ -5,7 +5,10 @@
     <p class="card-text">{{ product.price | currency: 'USD' : 'symbol' }}</p>
 
   </div>
-  <div *ngIf="showActions" class="card-footer d-grid">
-    <a href="#" class="btn btn-primary btn-block">Add To Cart</a>
+  <div *ngIf="showActions && shoppingCart" class="card-footer d-grid">
+    <button *ngIf="shoppingCart.getQuantity(product.id) == 0;" (click)="addToCart()" class="btn btn-secondary">Add To
+      Cart</button>
+
+    <product-quantity [product]="product" [shopping-cart]="shoppingCart"></product-quantity>
   </div>
 </div>

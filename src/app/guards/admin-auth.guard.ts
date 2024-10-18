@@ -8,7 +8,7 @@ import { AppUser } from '../models/app-user';
 export const adminAuthGuard: CanActivateFn = (route, state) => {
   let authService = inject(AuthService);
   return authService.appUser$.pipe(map(appUser => {
-    //debugger
+    //
     console.log(appUser);
     if (!appUser) {
       return false;

@@ -28,7 +28,7 @@ export class AuthService {
 
   get appUser$() {
     return this.user$.pipe(switchMap(user => {
-      //debugger
+      //
       if (user) {
         return this.userService.get(user.uid);
       }

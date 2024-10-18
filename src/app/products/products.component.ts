@@ -1,10 +1,14 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CategoryService } from '../services/category.service';
 import { ProductService } from '../services/product.service';
-import { map, Observable, Subscription, switchMap } from 'rxjs';
+import { map, Observable, Subject, Subscription, switchMap, takeUntil } from 'rxjs';
 import { Product } from '../models/product';
 import { Category } from '../models/category';
 import { ActivatedRoute } from '@angular/router';
+import { ShoppingCartService } from '../services/shopping-cart.service';
+import { Action } from 'rxjs/internal/scheduler/Action';
+import { ShoppingCart } from '../models/shopping-cart';
+import { CartItem } from '../models/cart-item';
 @Component({
   selector: 'app-products',
   templateUrl: './products.component.html',
@@ -15,12 +19,21 @@ export class ProductsComponent implements OnInit, OnDestroy {
   products: Product[] = [];
   filteredProducts: Product[] = [];
   category: string = "all";
+  shoppingCart!: ShoppingCart;
+  private unsubscribe$ = new Subject<void>();
   constructor(
     private route: ActivatedRoute,
-    private productService: ProductService) {
+    private productService: ProductService,
+    private cartService: ShoppingCartService) {
   }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
+    (await this.cartService.getCart())
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((cart) => {
+        console.log(cart)
+        this.shoppingCart = cart
+      });
     this.productServiceSubscription = this.productService
       .getAll()
       .snapshotChanges()
@@ -43,6 +56,8 @@ export class ProductsComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.productServiceSubscription.unsubscribe();
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
 }
