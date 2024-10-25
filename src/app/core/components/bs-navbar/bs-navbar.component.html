@@ -1,0 +1,42 @@
+<nav class="navbar navbar-expand-md navbar-light bg-light mb-4">
+  <div class="container">
+    <a class="navbar-brand" routerLink="/">
+      <i class="fa-solid fa-leaf"></i>
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
+      aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarCollapse">
+      <ul class="navbar-nav ms-auto mb-2 mb-md-0">
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/shopping-cart">
+            <i class="fa-solid fa-cart-shopping"></i>
+            <span class="badge rounded-pill bg-warning text-dark">
+              {{ shoppingCartItemCount }}
+            </span>
+          </a>
+        </li>
+        <li *ngIf="!appUser" class="nav-item">
+          <a class="nav-link" routerLink="/login">Login</a>
+        </li>
+
+        <li *ngIf="appUser" class="nav-item">
+          <div ngbDropdown class="d-inline-block">
+            <a class="nav-link" id="dropdownBasic1" ngbDropdownToggle>
+              {{ appUser.name}}
+            </a>
+            <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+              <a ngbDropdownItem routerLink="/my/orders">My Orders</a>
+              <ng-container *ngIf="appUser?.isAdmin">
+                <!-- <a ngbDropdownItem routerLink="/admin/orders">Manage Orders</a> -->
+                <a ngbDropdownItem routerLink="/admin/products">Manage Products</a>
+              </ng-container>
+              <a ngbDropdownItem (click)="logout()">Log Out</a>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
