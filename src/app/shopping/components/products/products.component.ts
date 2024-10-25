@@ -26,7 +26,7 @@ export class ProductsComponent implements OnInit, OnDestroy {
   }
 
   async ngOnInit(): Promise<void> {
-    this.loaderService.show();
+    //this.loaderService.show();
     (await this.cartService.getCart())
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((cart) => {
